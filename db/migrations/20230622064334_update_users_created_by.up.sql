@@ -1,0 +1,1 @@
+UPDATE "users" SET "created_by" = '' WHERE "user_role" = 'admin';

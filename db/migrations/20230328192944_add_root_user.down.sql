@@ -1,0 +1,1 @@
+DELETE FROM users WHERE user_id = 'bd68884b-0fc0-45e6-ace2-0e55298dd6eb';

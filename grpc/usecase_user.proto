@@ -1,0 +1,204 @@
+syntax = "proto3";
+
+package grpc;
+
+option go_package = ".";
+
+service UserUsecase {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {}
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {}
+  rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {}
+  rpc GetUsersByPaginationQuery (GetUsersByPaginationQueryRequest) returns (GetUsersByPaginationQueryResponse) {}
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
+  rpc GetUserByID (GetUserByIDRequest) returns (GetUserByIDResponse) {}
+  rpc GetUserByNickname (GetUserByNicknameRequest) returns (GetUserByNicknameResponse) {}
+  rpc CheckUserByNickname (CheckUserByNicknameRequest) returns (CheckUserByNicknameResponse) {}
+  rpc VoteUser (VoteUserRequest) returns (VoteUserResponse) {}
+  rpc VoteUserWithdraw (VoteUserWithdrawRequest) returns (VoteUserWithdrawResponse) {}
+  rpc FindExistVoting (FindExistVotingRequest) returns (FindExistVotingResponse) {}
+  rpc FindVotesForUser (FindVotesForUserRequest) returns (FindVotesForUserResponse) {}
+  rpc LoadVotesToUsers (LoadVotesToUsersRequest) returns (LoadVotesToUsersResponse) {}
+  rpc GetLastVoteForUser (GetLastVoteForUserRequest) returns (GetLastVoteForUserResponse) {}
+  rpc Vote (VoteRequest) returns (VoteResponse) {}
+}
+
+message User {
+    string user_id = 1;
+    string nickname = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string email = 5;
+    string password = 6;
+    bool is_public = 7;
+    string user_role = 8;
+    string updated_at = 9;
+    string deleted_at = 10;
+    string login_date = 11;
+    repeated Vote votes = 12;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  User user = 1;
+}
+
+message UpdateUserResponse {
+  User user = 1;
+}
+
+message DeleteUserRequest {
+  string user_id = 1;
+}
+
+message DeleteUserResponse {
+  string user_id = 1;
+}
+
+message GetUsersRequest {
+    PaginationQuery pagination_query = 1;
+}
+
+message GetUsersResponse {
+    Users users = 1;
+}
+
+message GetUsersByPaginationQueryRequest {
+    PaginationQuery pagination_query = 1;
+}
+
+message GetUsersByPaginationQueryResponse {
+    Users users = 1;
+}
+
+message PaginationQuery {
+  int32 size = 1;
+  int32 page = 2;
+  string order_by = 3;
+}
+
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message GetUserByIDRequest {
+  string user_id = 1;
+}
+
+message GetUserByIDResponse {
+  User user = 1;
+}
+
+message GetUserByNicknameRequest {
+  string nickname = 1;
+}
+
+message GetUserByNicknameResponse {
+  User user = 1;
+}
+
+message CheckUserByNicknameRequest {
+    User user = 1;
+}
+
+message CheckUserByNicknameResponse {
+  bool is_exist = 1;
+}
+
+message VoteUserRequest {
+    Vote vote = 1;
+    UserVote user_vote = 2;
+}
+
+message VoteUserResponse {
+    Vote vote = 1;
+    UserVote user_vote = 2;
+}
+
+message VoteUserWithdrawRequest {
+    Vote vote = 1;
+    UserVote user_vote = 2;
+}
+
+message VoteUserWithdrawResponse {
+    Vote vote = 1;
+    UserVote user_vote = 2;
+}
+
+message FindExistVotingRequest {
+    string user_id = 1;  
+    string voter_user_id = 2;
+}
+
+message FindExistVotingResponse {
+    Vote vote = 1;
+    UserVote user_vote = 2;
+}
+
+message FindVotesForUserRequest {
+  string user_id = 1;
+  string voter_user_id = 2;
+}
+
+message FindVotesForUserResponse {
+  repeated Vote votes = 1;
+}
+
+message LoadVotesToUsersResponse {
+  repeated User users = 1;
+}
+
+message LoadVotesToUsersRequest {
+  Users users = 1;
+}
+
+message Users {
+    int32 page = 1;
+    bool has_more = 2;
+    repeated User users = 3;
+}
+
+message GetLastVoteForUserRequest {
+  string user_id = 1;
+}
+
+message GetLastVoteForUserResponse {
+  Vote vote = 1;
+}
+
+message VoteRequest {
+    Vote vote = 1;
+    UserVote user_vote = 2;
+}
+
+message VoteResponse {
+  Vote vote = 1;
+  UserVote user_vote = 2;
+}
+
+message UserVote {
+    int64 id = 1;
+    string user_id = 2;
+    int64 vote_id = 3;
+}
+
+message Vote {
+    int64 vote_id = 1;
+    int32 vote = 2;
+    string created_user_id = 3;
+    string created_at = 4;
+}
+
+
+

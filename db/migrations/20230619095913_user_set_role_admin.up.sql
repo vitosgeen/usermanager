@@ -1,0 +1,1 @@
+UPDATE "users" SET "user_role" = 'admin' WHERE "nickname" IN ('root', 'admin');

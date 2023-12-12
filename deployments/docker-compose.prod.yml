@@ -1,0 +1,53 @@
+version: '3.9'
+name: usermanager
+
+services:
+  usermanager:
+    container_name: usermanager_app
+    env_file: ./../configs/.env
+    tty: true
+    build:
+      context: ./../
+      dockerfile: ./build/packpage/Dockerfile
+    ports:
+      - ${PORT_APP}:${PORT_APP}
+    restart: on-failure
+    volumes:
+      - .:/usermanager
+    depends_on:
+      - postgresdb
+      - redis
+    networks:
+      - usermanager_network
+
+  redis:
+    image: redis:6.0.9-alpine
+    container_name: usermanager_redis
+    ports:
+      - "${REDIS_PORT_LOCAL}:${REDIS_PORT}"
+    restart: always
+    networks:
+      - usermanager_network
+
+  postgresdb:
+    container_name: usermanager_database
+    image: 'postgres:14.0'
+    ports:
+      - "${POSTGRES_PORT_LOCAL}:${POSTGRES_PORT}"
+    volumes:
+      - database_postgres:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DBNAME}
+    networks:
+      - usermanager_network
+
+volumes:
+  usermanager:
+  database_postgres:
+  
+networks:
+  usermanager_network:
+    driver: bridge
